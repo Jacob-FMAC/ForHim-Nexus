@@ -2,7 +2,7 @@ class AppConstants {
   // API Configuration
   // Use machine's WiFi IP so physical devices/emulators can connect.
   // For Android emulator use 10.0.2.2 instead. For web use localhost.
-  static const String apiBaseUrl = 'http://localhost:8080';
+  static const String apiBaseUrl = 'http://148.72.246.7:8000';
   static const String apiActionPrefix = '?q=';
 
   // App Info
