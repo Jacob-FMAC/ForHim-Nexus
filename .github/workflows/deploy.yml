@@ -27,16 +27,19 @@ jobs:
         with:
           channel: stable
 
+      - name: Clean project
+        run: flutter clean
+
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build Flutter Web
-        run: flutter build web --release --base-href "/ForHim-Nexus/"
+      - name: Build Flutter Web (stable renderer)
+        run: flutter build web --release --web-renderer html --base-href "/ForHim-Nexus/"
 
       - name: Disable Jekyll
         run: touch build/web/.nojekyll
 
-      - name: Upload artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/web
