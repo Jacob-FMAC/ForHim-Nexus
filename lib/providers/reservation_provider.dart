@@ -27,26 +27,30 @@ class ReservationProvider with ChangeNotifier {
   bool get isInitialCheckDone => _isInitialCheckDone;
 
   Future<void> initialize() async {
-    _token = await _storage.getReservationToken();
-    _fingerprint = await _storage.getFingerprint();
-    
-    if (_fingerprint == null) {
-      // Simple fingerprint: platform + timestamp + random
-      final raw = '${DateTime.now().millisecondsSinceEpoch}-${StackTrace.current.toString().hashCode}';
-      _fingerprint = sha256.convert(utf8.encode(raw)).toString();
-      await _storage.saveFingerprint(_fingerprint!);
-    }
+    try {
+      _token = await _storage.getReservationToken();
+      _fingerprint = await _storage.getFingerprint();
+      
+      if (_fingerprint == null) {
+        // Simple fingerprint: platform + timestamp + random
+        final raw = '${DateTime.now().millisecondsSinceEpoch}-${StackTrace.current.toString().hashCode}';
+        _fingerprint = sha256.convert(utf8.encode(raw)).toString();
+        await _storage.saveFingerprint(_fingerprint!);
+      }
 
-    await checkSystemStatus();
-    
-    if (_token != null) {
-      await fetchTicketData();
-    } else {
-      await checkExistingReservation();
+      await checkSystemStatus();
+      
+      if (_token != null) {
+        await fetchTicketData();
+      } else {
+        await checkExistingReservation();
+      }
+    } catch (e) {
+      debugPrint('Initialization error: $e');
+    } finally {
+      _isInitialCheckDone = true;
+      notifyListeners();
     }
-    
-    _isInitialCheckDone = true;
-    notifyListeners();
   }
 
   Future<void> fetchTicketData() async {

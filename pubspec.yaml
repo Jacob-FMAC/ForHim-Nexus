@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.4
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,9 +25,8 @@ dependencies:
   # UI Components
   cupertino_icons: ^1.0.8
   
-  # QR & Scanning
+  # QR Generation (web compatible)
   qr_flutter: ^4.1.0
-  mobile_scanner: ^3.5.2
   
   # Crypto for fingerprint/hashing
   crypto: ^3.0.3
